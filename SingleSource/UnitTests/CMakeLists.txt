@@ -19,7 +19,7 @@ if(TARGET_OS STREQUAL "Darwin")
   add_subdirectory(ObjC++)
 endif()
 
-file(GLOB Source RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.c *.cpp)
+file(GLOB Source *.c *.cpp)
 if(TARGET_OS STREQUAL "AIX" AND ARCH STREQUAL "PowerPC")
   list(REMOVE_ITEM Source 2007-04-25-weak.c)
   if (NOT PPC_IS_PPC64_ENABLED)
