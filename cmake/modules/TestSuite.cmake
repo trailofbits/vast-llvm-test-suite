@@ -60,6 +60,11 @@ function(generate_mlir target sources)
     if(EXE_COMPILE_FLAGS STREQUAL "EXE_COMPILE_FLAGS-NOTFOUND")
         set(EXE_COMPILE_FLAGS "")
     endif()
+    get_directory_property(EXE_DEFINITIONS DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} COMPILE_DEFINITIONS)
+    if(NOT EXE_DEFINITIONS)
+        set(EXE_DEFINITIONS "")
+    endif()
+    list(TRANSFORM EXE_DEFINITIONS PREPEND "-D")
     get_target_property(EXE_COMPILE_OPTIONS ${target}-bogus COMPILE_OPTIONS)
     separate_arguments(EXE_COMPILE_OPTIONS)
     foreach(source ${sources})
@@ -71,7 +76,7 @@ function(generate_mlir target sources)
          # Citing the top-level cmake:
          # The test-suite is designed to be built in release mode anyway and
          # falls over unless -DNDEBUG is set.
-         COMMAND ${CMAKE_BINARY_DIR}/tools/timeit --summary ${target}.time ${CMAKE_C_COMPILER} -DNDEBUG ${EXE_COMPILE_OPTIONS} ${EXE_COMPILE_FLAGS} -o "${CMAKE_CURRENT_BINARY_DIR}/${target}.mlir" ${sources_absolute}
+         COMMAND ${CMAKE_BINARY_DIR}/tools/timeit --summary ${target}.time ${CMAKE_C_COMPILER} ${EXE_COMPILE_OPTIONS} ${EXE_COMPILE_FLAGS} ${EXE_DEFINITIONS} -o "${CMAKE_CURRENT_BINARY_DIR}/${target}.mlir" ${sources_absolute}
          COMMENT "Generating mlir file for ${target}"
     )
     add_custom_target(
