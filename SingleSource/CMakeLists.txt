@@ -3,6 +3,11 @@ if(VAST_TEST_SUITE_ENABLE)
     add_compile_options(
         --set-compiler vast-front
     )
+    if(VAST_DISABLE_UNSUPPORTED)
+        add_compile_options(
+            -vast-disable-unsupported
+        )
+    endif()
     if(NOT VAST_TEST_SUITE_TARGET STREQUAL "bin")
             set(MLIR_TEST_GENERATION ON)
             add_compile_options(
